@@ -13,7 +13,7 @@ export function About() {
           className="aspect-square relative overflow-hidden rounded-[80px]"
         >
           <img 
-            src="https://images.unsplash.com/photo-1599406536574-8ac992634cca?auto=format&fit=crop&q=80&w=1200"
+            src="/images/premium_bud_brand.png"
             alt="Buds n Buddies Community"
             className="w-full h-full object-cover"
           />

@@ -13,20 +13,23 @@ import { INITIAL_PRODUCTS } from "../constants";
 
 export function Home() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Set to false for instant local load
 
   useEffect(() => {
     async function fetchProducts() {
       try {
         const querySnapshot = await getDocs(collection(db, "products"));
         if (!querySnapshot.empty) {
-          const prodData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product));
-          setProducts(prodData);
+          const prodData = querySnapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() } as Product))
+            .filter(p => p.name && p.image);
+          
+          if (prodData.length > 0) {
+            setProducts(prodData);
+          }
         }
       } catch (error) {
-        console.warn("Firestore fetch failed, using local fallback:", error);
-      } finally {
-        setLoading(false);
+        console.log("Using local fallback (Firestore unavailable)");
       }
     }
     fetchProducts();

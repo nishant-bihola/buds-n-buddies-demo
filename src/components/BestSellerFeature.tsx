@@ -59,7 +59,7 @@ export function BestSellerFeature() {
           className="order-1 lg:order-2 relative"
         >
           <img 
-            src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800" 
+            src="/images/nano_banana_kush.png" 
             alt="Bud Feature"
             className="w-full h-auto rounded-[60px] shadow-2xl"
           />

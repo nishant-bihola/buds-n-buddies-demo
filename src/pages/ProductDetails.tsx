@@ -7,11 +7,14 @@ import { doc, getDoc } from "firebase/firestore";
 import type { Product } from "../types";
 import { INITIAL_PRODUCTS } from "../constants";
 
+import { useCart } from "../context/CartContext";
+
 export function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     async function fetchProduct() {
@@ -109,7 +112,10 @@ export function ProductDetails() {
                   +
                 </button>
               </div>
-              <button className="flex-1 flex items-center justify-center gap-4 bg-brand-green text-brand-earth py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-brand-green/20">
+              <button 
+                onClick={() => addToCart(product, quantity)}
+                className="flex-1 flex items-center justify-center gap-4 bg-brand-green text-brand-earth py-5 rounded-full text-sm font-bold uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-brand-green/20"
+              >
                 Add to Cart
                 <ShoppingCart size={20} />
               </button>

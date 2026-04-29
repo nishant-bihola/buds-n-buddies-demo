@@ -9,7 +9,7 @@ import { INITIAL_PRODUCTS } from "../constants";
 
 export function ShopPage() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Instant local load
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,9 +24,7 @@ export function ShopPage() {
           setProducts(prodData);
         }
       } catch (error) {
-        console.warn("Firestore fetch failed, using local fallback:", error);
-      } finally {
-        setLoading(false);
+        console.warn("Using local fallback");
       }
     }
     fetchProducts();

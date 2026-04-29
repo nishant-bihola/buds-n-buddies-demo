@@ -38,7 +38,7 @@ export function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
           <div className="lg:col-span-4 self-start">
             <div className="mb-8 h-12 flex items-center">
-              <img src="https://budnbuddies.ca/s/media/f/3b/9c/de/60/3b9cde60-00ed-4b8a-a7c3-2d10c55a81c7.png" alt="Bud n' Buddies" className="h-full w-auto object-contain brightness-0 invert opacity-80" />
+              <img src="/images/buds_n_buddies_logo.png" alt="Bud n' Buddies" className="h-full w-auto object-contain brightness-0 invert opacity-80" />
             </div>
             <div className="flex gap-4">
               {[Instagram, Twitter, Facebook].map((Icon, i) => (

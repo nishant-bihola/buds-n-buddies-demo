@@ -2,7 +2,8 @@ import React from "react";
 import { motion } from "motion/react";
 import type { Product } from "../types";
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Plus } from "lucide-react";
+import { useCart } from "../context/CartContext";
 
 interface ProductGridProps {
   products: Product[];
@@ -46,66 +47,79 @@ export function ProductGrid({ products, loading }: ProductGridProps) {
 
 function ProductCard({ product }: { product: Product }) {
   const [isHovered, setIsHovered] = React.useState(false);
+  const { addToCart } = useCart();
 
   return (
     <motion.div
-      layout
-      className="group relative flex flex-col pt-12 pb-8 px-8 bg-brand-earth/5 rounded-[40px] hover:bg-brand-earth/10 transition-colors"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="group relative flex flex-col pt-10 pb-8 px-8 bg-[#1e4d2b] rounded-[40px] transition-all duration-500 overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link to={`/product/${product.id}`} className="absolute inset-0 z-20" />
-      <div className="flex justify-between items-start mb-8">
-        {product.isBestSeller && (
-          <span className="bg-brand-earth text-brand-green px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+      {/* The Link wraps everything EXCEPT the Add to Cart button */}
+      <Link to={`/product/${product.id}`} className="absolute inset-0 z-10" aria-label={`View ${product.name}`} />
+      
+      {/* Top Bar */}
+      <div className="flex justify-between items-center mb-10 relative z-20 pointer-events-none">
+        {product.isBestSeller ? (
+          <span className="bg-white text-[#1e4d2b] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
             Best Seller
           </span>
+        ) : (
+          <div />
         )}
-        <span className="ml-auto text-xl font-bold font-mono">
+        <span className="text-xl font-bold text-white tracking-tight">
           ${product.price.toFixed(2)}
         </span>
       </div>
 
-      <div className="relative h-[400px] flex items-center justify-center">
-        {/* Glow Effect */}
+      {/* Image Container */}
+      <div className="relative h-[350px] flex items-center justify-center mb-6">
         <motion.div
-          className="absolute inset-0 bg-brand-light-green/20 blur-[100px] rounded-full"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: isHovered ? 1.5 : 0, opacity: isHovered ? 1 : 0 }}
+          className="absolute w-[280px] h-[280px] bg-white rounded-xl shadow-2xl"
+          animate={{
+            rotate: isHovered ? -2 : -6,
+            scale: isHovered ? 1.05 : 1,
+          }}
           transition={{ duration: 0.4 }}
         />
         
-        {/* Product Image */}
         <motion.img
           src={product.image}
           alt={product.name}
-          className="relative z-10 w-4/5 h-4/5 object-cover rounded-3xl drop-shadow-xl"
+          className="relative z-10 w-[240px] h-[240px] object-contain"
           animate={{
-            rotate: isHovered ? 0 : 5,
-            y: [0, -10, 0],
+            rotate: isHovered ? 0 : 2,
+            scale: isHovered ? 1.1 : 1,
+            y: isHovered ? -10 : 0
           }}
-          transition={{
-            y: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-            rotate: { duration: 0.4 },
-          }}
+          transition={{ duration: 0.4 }}
         />
       </div>
 
-      <div className="mt-8 flex items-center justify-between">
-        <div>
-          <h3 className="text-3xl font-black uppercase tracking-tighter">
+      {/* Bottom Content */}
+      <div className="mt-auto flex items-center justify-between relative z-20">
+        <div className="flex-1 min-w-0 mr-4 pointer-events-none">
+          <h3 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight group-hover:text-brand-light-green transition-colors truncate">
             {product.name}
           </h3>
-          <p className="text-brand-earth/50 text-xs font-bold uppercase tracking-widest mt-1">
+          <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest mt-1">
             {product.category}
           </p>
         </div>
-        <motion.div 
-          animate={{ rotate: isHovered ? 45 : 0 }}
-          className="w-12 h-12 flex items-center justify-center border border-white/20 rounded-full group-hover:bg-brand-earth group-hover:text-brand-green transition-colors"
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addToCart(product);
+          }}
+          className="w-12 h-12 flex items-center justify-center bg-white text-[#1e4d2b] rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg shrink-0 pointer-events-auto"
+          title="Add to Cart"
         >
-          <ArrowUpRight size={24} />
-        </motion.div>
+          <Plus size={24} />
+        </button>
       </div>
     </motion.div>
   );

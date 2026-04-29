@@ -55,7 +55,7 @@ export function AboutPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative">
              <img 
-               src="https://images.unsplash.com/photo-1628155255427-466030999054?auto=format&fit=crop&q=80&w=1200" 
+               src="/images/island_pink_kush.png" 
                alt="Our Greenhouse" 
                className="rounded-[60px] shadow-2xl"
              />

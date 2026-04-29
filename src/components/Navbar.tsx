@@ -2,33 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { ShoppingCart, Menu, User, LogOut, X } from "lucide-react";
-import { auth, googleProvider } from "../firebase";
-import { signInWithPopup, signOut, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 export function Navbar() {
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const { user, login, logout } = useAuth();
+  const { cartCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-    return () => unsubscribe();
-  }, []);
 
   // Close menu on route change
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
-
-  const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
-
-  const handleLogout = () => signOut(auth);
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -39,22 +25,23 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-earth/80 backdrop-blur-md border-b border-brand-green/10">
-      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-8">
+      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center">
+        {/* Left Section: Menu & Links */}
+        <div className="flex-1 flex items-center gap-4 sm:gap-8">
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-brand-green text-brand-earth rounded-full text-sm font-bold uppercase tracking-wider relative z-[60]"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-brand-green text-brand-earth rounded-full text-[10px] sm:text-sm font-bold uppercase tracking-wider relative z-[60]"
           >
-            {isMenuOpen ? <X size={16} /> : <Menu size={16} />}
+            {isMenuOpen ? <X size={14} /> : <Menu size={14} />}
             <span className="hidden sm:inline">{isMenuOpen ? "Close" : "Menu"}</span>
           </button>
           
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden xl:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link 
                 key={link.name}
                 to={link.path}
-                className={`text-xs font-bold uppercase tracking-widest transition-colors ${
+                className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
                   location.pathname === link.path ? "text-brand-green" : "text-brand-green/50 hover:text-brand-green"
                 }`}
               >
@@ -64,43 +51,58 @@ export function Navbar() {
           </div>
         </div>
 
-        <Link to="/" className="absolute left-1/2 -translate-x-1/2 h-16 flex items-center">
-          <img src="https://budnbuddies.ca/s/media/f/3b/9c/de/60/3b9cde60-00ed-4b8a-a7c3-2d10c55a81c7.png" alt="Bud n' Buddies Cannabis" className="h-full w-auto object-contain" />
+        {/* Center Section: Logo */}
+        <Link to="/" className="flex items-center justify-center h-full px-2 sm:px-4 group">
+          <img 
+            src="/images/buds_n_buddies_logo.png" 
+            alt="Bud n' Buddies" 
+            className="h-8 sm:h-12 md:h-16 w-auto object-contain transition-transform group-hover:scale-105" 
+          />
         </Link>
 
-        <div className="flex items-center gap-3">
+        {/* Right Section: Actions */}
+        <div className="flex-1 flex items-center justify-end gap-2 sm:gap-3">
           {user ? (
-            <div className="flex items-center gap-4">
-              <img src={user.photoURL || ""} alt={user.displayName || ""} className="w-8 h-8 rounded-full border border-brand-green/20" />
+            <div className="flex items-center gap-2 sm:gap-4">
+              <img src={user.photoURL || ""} alt={user.displayName || ""} className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border border-brand-green/20" />
               <button 
-                onClick={handleLogout}
+                onClick={logout}
                 className="text-brand-green/60 hover:text-brand-green transition-colors"
                 title="Logout"
               >
-                <LogOut size={20} />
+                <LogOut size={18} />
               </button>
             </div>
           ) : (
             <button 
-              onClick={handleLogin}
-              className="flex items-center gap-2 text-brand-green hover:opacity-70 transition-opacity"
+              onClick={login}
+              className="flex items-center gap-1 sm:gap-2 text-brand-green hover:opacity-70 transition-opacity"
             >
-              <User size={20} />
-              <span className="hidden sm:inline text-xs font-bold uppercase tracking-widest">Login</span>
+              <User size={18} />
+              <span className="hidden lg:inline text-[10px] font-bold uppercase tracking-widest">Login</span>
             </button>
           )}
 
-          <div className="h-4 w-px bg-brand-green/20 mx-2" />
+          <div className="hidden sm:block h-4 w-px bg-brand-green/20 mx-1" />
 
-          <Link to="/shop" className="hidden md:flex items-center gap-2 px-8 py-3 bg-brand-green text-brand-earth rounded-full text-sm font-bold uppercase tracking-wider hover:scale-105 transition-transform">
+          <Link to="/shop" className="hidden lg:flex items-center gap-2 px-4 xl:px-8 py-2 xl:py-3 bg-brand-green text-brand-earth rounded-full text-[10px] font-bold uppercase tracking-wider hover:scale-105 transition-transform whitespace-nowrap">
             Shop Now
           </Link>
-          <div className="relative p-2 bg-brand-green/5 rounded-full cursor-pointer hover:bg-brand-green/10 transition-colors">
-            <ShoppingCart size={24} className="text-brand-green" />
-            <span className="absolute -top-1 -right-1 bg-brand-green text-brand-earth text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
-              0
-            </span>
-          </div>
+          
+          <Link 
+            to="/checkout" 
+            className="relative p-2 bg-brand-green/5 rounded-full cursor-pointer hover:bg-brand-green/10 transition-colors"
+          >
+            <ShoppingCart size={20} className="text-brand-green" />
+            <motion.span 
+              key={cartCount}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="absolute -top-1 -right-1 bg-brand-green text-brand-earth text-[9px] w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-bold"
+            >
+              {cartCount}
+            </motion.span>
+          </Link>
         </div>
       </div>
 

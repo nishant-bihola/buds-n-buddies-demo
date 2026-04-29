@@ -80,7 +80,7 @@ export function Hero() {
         className="mt-16 relative w-full max-w-5xl px-4"
       >
         <img 
-          src="https://images.unsplash.com/photo-1628155255427-466030999054?auto=format&fit=crop&q=80&w=1200" 
+          src="/images/hero_premium_bud.png" 
           alt="Premium Cannabis Flower" 
           className="w-full h-auto rounded-[60px] shadow-2xl"
         />

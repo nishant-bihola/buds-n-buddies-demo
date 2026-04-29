@@ -14,7 +14,7 @@ export function Intro() {
             className="aspect-[3/4] overflow-hidden rounded-3xl"
           >
             <img 
-              src="https://images.unsplash.com/photo-1594498653385-d5172c532c00?auto=format&fit=crop&q=80&w=800" 
+              src="/images/island_pink_kush.png" 
               className="w-full h-full object-cover"
               alt="Hand trimmed flower"
             />
@@ -27,7 +27,7 @@ export function Intro() {
             className="aspect-[3/4] overflow-hidden rounded-3xl mt-20"
           >
             <img 
-              src="https://images.unsplash.com/photo-1596280447192-36bc1ea3b35f?auto=format&fit=crop&q=80&w=800" 
+              src="/images/premium_bud_brand.png" 
               className="w-full h-full object-cover"
               alt="Premium Bud"
             />
