@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Great Vibes", cursive;
+  
+  --color-brand-green: #1e4d2b;
+  --color-brand-light-green: #c5e1a5;
+  --color-brand-earth: #f4f1ea;
+  --color-brand-dark: #121212;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-earth text-brand-dark font-sans;
+  }
+}
