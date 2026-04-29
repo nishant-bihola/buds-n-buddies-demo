@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
 export function Hero() {
   const leaves = [
@@ -64,13 +65,15 @@ export function Hero() {
           Small-batch, hand-trimmed, never dry.
         </motion.p>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-brand-green text-brand-earth px-12 py-5 rounded-full text-lg font-bold uppercase tracking-widest shadow-xl shadow-brand-green/20"
-        >
-          Shop Collection
-        </motion.button>
+        <Link to="/shop">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-brand-green text-brand-earth px-12 py-5 rounded-full text-lg font-bold uppercase tracking-widest shadow-xl shadow-brand-green/20"
+          >
+            Shop Collection
+          </motion.button>
+        </Link>
       </div>
 
       <motion.div
