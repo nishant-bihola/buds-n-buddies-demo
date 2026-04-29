@@ -38,7 +38,6 @@ export function Home() {
   return (
     <>
       <Hero />
-      <LogoMarquee />
       <Intro />
       <ProductGrid products={products} loading={loading} />
       <Reviews />

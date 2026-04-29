@@ -89,6 +89,7 @@ export function ProductCard({ product }: { product: Product }) {
         <motion.img
           src={product.image}
           alt={product.name}
+          loading="lazy"
           className="relative z-10 w-[240px] h-[240px] object-contain"
           animate={{
             rotate: isHovered ? 0 : 2,
