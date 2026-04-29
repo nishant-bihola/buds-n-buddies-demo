@@ -3,18 +3,16 @@ import { motion, AnimatePresence } from "motion/react";
 import { ShieldCheck, ArrowRight, ExternalLink } from "lucide-react";
 
 export function AgeVerification() {
-  const [showGate, setShowGate] = useState(false);
-
-  useEffect(() => {
-    const verified = localStorage.getItem("age-verified");
-    if (verified !== "true") {
-      setShowGate(true);
+  const [showGate, setShowGate] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("age-verified") !== "true";
     }
-  }, []);
+    return true;
+  });
 
   const handleVerify = (verified: boolean) => {
     if (verified) {
-      localStorage.setItem("age-verified", "true");
+      sessionStorage.setItem("age-verified", "true");
       setShowGate(false);
     } else {
       window.location.href = "https://www.google.com";
