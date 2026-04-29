@@ -45,7 +45,7 @@ export function ProductGrid({ products, loading }: ProductGridProps) {
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product }: { product: Product }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const { addToCart } = useCart();
 
@@ -59,7 +59,7 @@ function ProductCard({ product }: { product: Product }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* The Link wraps everything EXCEPT the Add to Cart button */}
-      <Link to={`/product/${product.id}`} className="absolute inset-0 z-10" aria-label={`View ${product.name}`} />
+      <Link to={`/product/${product.id}`} className="absolute inset-0 z-30" aria-label={`View ${product.name}`} />
       
       {/* Top Bar */}
       <div className="flex justify-between items-center mb-10 relative z-20 pointer-events-none">
@@ -115,7 +115,7 @@ function ProductCard({ product }: { product: Product }) {
             e.stopPropagation();
             addToCart(product);
           }}
-          className="w-12 h-12 flex items-center justify-center bg-white text-[#1e4d2b] rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg shrink-0 pointer-events-auto"
+          className="w-12 h-12 flex items-center justify-center bg-white text-[#1e4d2b] rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg shrink-0 pointer-events-auto relative z-40"
           title="Add to Cart"
         >
           <Plus size={24} />

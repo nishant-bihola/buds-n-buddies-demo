@@ -7,6 +7,8 @@ import { collection, getDocs } from "firebase/firestore";
 import type { Product } from "../types";
 import { INITIAL_PRODUCTS } from "../constants";
 
+import { ProductCard } from "../components/ProductGrid";
+
 export function ShopPage() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [loading, setLoading] = useState(false); // Instant local load
@@ -83,46 +85,7 @@ export function ShopPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
             {filteredProducts.map((product) => (
-              <motion.div
-                layout
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="group bg-white p-8 rounded-[40px] border border-brand-green/5 hover:shadow-2xl transition-all"
-              >
-                <Link to={`/product/${product.id}`}>
-                  <div className="aspect-square relative overflow-hidden rounded-3xl mb-8 bg-brand-earth">
-                    <img 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    {product.isBestSeller && (
-                      <span className="absolute top-4 left-4 bg-brand-green text-brand-earth px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest z-10">
-                        Best Seller
-                      </span>
-                    )}
-                  </div>
-                </Link>
-                <div className="flex justify-between items-start mb-2">
-                  <Link to={`/product/${product.id}`}>
-                    <h3 className="text-2xl font-black uppercase tracking-tighter text-brand-green leading-tight hover:opacity-70 transition-opacity">
-                      {product.name}
-                    </h3>
-                  </Link>
-                  <span className="text-xl font-bold text-brand-dark">
-                    ${product.price.toFixed(2)}
-                  </span>
-                </div>
-                <p className="text-brand-dark/50 text-sm font-medium mb-8">
-                  {product.category}
-                </p>
-                <button className="w-full flex items-center justify-center gap-3 bg-brand-green text-brand-earth py-4 rounded-full text-sm font-bold uppercase tracking-widest group-hover:scale-[1.02] transition-transform">
-                  Add to Cart
-                  <ArrowUpRight size={18} />
-                </button>
-              </motion.div>
+              <ProductCard key={product.id} product={product} />
             ))}
           </AnimatePresence>
         </div>
